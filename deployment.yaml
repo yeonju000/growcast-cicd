@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: growcast
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: growcast
+  template:
+    metadata:
+      labels:
+        app: growcast
+    spec:
+      containers:
+        - name: growcast
+          image: yeonju7547/growcast:latest
+          ports:
+            - containerPort: 3030
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: growcast-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: growcast
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3030
