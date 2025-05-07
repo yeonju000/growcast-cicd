@@ -3,8 +3,8 @@ pipeline {
 
     environment {
         PROJECT_ID = 'instant-grove-458712-t6'
-        CLUSTER_NAME = 'growast-cluster'
-        REGION = 'asia-northeast3'
+        CLUSTER_NAME = 'growcast-cluster'  // 수정됨
+        ZONE = 'asia-northeast3-c'         // 수정됨 (원래 REGION → ZONE)
         DOCKER_IMAGE = 'yeonju7547/growcast'
     }
 
@@ -47,7 +47,7 @@ pipeline {
             steps {
                 script {
                     sh "gcloud auth activate-service-account --key-file=\$GOOGLE_APPLICATION_CREDENTIALS"
-                    sh "gcloud container clusters get-credentials ${CLUSTER_NAME} --region ${REGION} --project ${PROJECT_ID}"
+                    sh "gcloud container clusters get-credentials ${CLUSTER_NAME} --zone ${ZONE} --project ${PROJECT_ID}"  // 수정됨
                     sh "sed -i 's|image:.*|image: ${DOCKER_IMAGE}:${BUILD_ID}|' deployment.yaml"
                     sh "kubectl apply -f deployment.yaml"
                 }
